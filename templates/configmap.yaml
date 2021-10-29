@@ -1,0 +1,19 @@
+{{- range $content := .Values.variables }}
+{{- range $namespace := $content.namespaces }}
+{{- if $content.configs }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $content.name }}
+  namespace: {{ $namespace }}
+  labels:
+    platform: {{ $.Values.global.platform }}
+    environment: {{ $.Values.global.environment }}
+data:
+  {{- range $key, $value := $content.configs }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
